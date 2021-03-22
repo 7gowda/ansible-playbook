@@ -1,0 +1,22 @@
+---
+- hosts: webapps
+  become: true
+  tasks:
+    - name: stop the service
+      ansible.builtin.service:
+        name: tomcat
+        state: stopped
+    - name: Download file from artifactory
+      get_url:
+
+        url: http://3.19.75.225:8081/artifactory/libs-release-local/com/efsavage/hello-world-war/1.0.0/hello-world-war-1.0.0.war
+        #headers:
+        username: gowda
+        password: Gowda@123
+        dest: /opt/tomcat/webapps
+        mode: 0644
+        force_basic_auth: yes
+    - name: start the service
+      ansible.builtin.service:
+        name: tomcat
+        state: started
